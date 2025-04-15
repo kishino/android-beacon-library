@@ -50,6 +50,7 @@ public class ScanState implements Serializable {
     private boolean mBackgroundMode;
     private long mLastScanStartTimeMillis = 0l;
     private transient Context mContext;
+    private int mMinScanJobIntervalMillis;
 
     public Boolean getBackgroundMode() {
         return mBackgroundMode;
@@ -235,8 +236,8 @@ public class ScanState implements Serializable {
         else {
             cyclePeriodMillis = getForegroundScanPeriod()+getForegroundBetweenScanPeriod();
         }
-        int scanJobIntervalMillis = MIN_SCAN_JOB_INTERVAL_MILLIS;
-        if (cyclePeriodMillis > MIN_SCAN_JOB_INTERVAL_MILLIS) {
+        int scanJobIntervalMillis = mMinScanJobIntervalMillis;
+        if (cyclePeriodMillis > mMinScanJobIntervalMillis) {
             scanJobIntervalMillis = (int) cyclePeriodMillis;
         }
         return scanJobIntervalMillis;
@@ -253,8 +254,8 @@ public class ScanState implements Serializable {
         }
         if (!getBackgroundMode()) {
             // if we are in the foreground, we keep the scan job going for the minimum interval
-            if (scanPeriodMillis < MIN_SCAN_JOB_INTERVAL_MILLIS) {
-                return MIN_SCAN_JOB_INTERVAL_MILLIS;
+            if (scanPeriodMillis < mMinScanJobIntervalMillis) {
+                return mMinScanJobIntervalMillis;
             }
         }
         return (int) scanPeriodMillis;
@@ -269,6 +270,7 @@ public class ScanState implements Serializable {
         mBackgroundScanPeriod = beaconManager.getBackgroundScanPeriod();
         mBackgroundBetweenScanPeriod = beaconManager.getBackgroundBetweenScanPeriod();
         mBackgroundMode = beaconManager.getBackgroundMode();
+        mMinScanJobIntervalMillis = beaconManager.getActiveSettings().getMinScanJobIntervalMillis();
 
         ArrayList<Region> existingMonitoredRegions = new ArrayList<>(mMonitoringStatus.regions());
         ArrayList<Region> existingRangedRegions = new ArrayList<>(mRangedRegionState.keySet());
