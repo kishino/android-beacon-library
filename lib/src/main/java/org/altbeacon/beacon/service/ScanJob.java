@@ -226,7 +226,9 @@ public class ScanJob extends JobService {
             }
 
             stopScanning();
-            startPassiveScanIfNeeded();
+            if (mScanState != null && mScanState.getBackgroundMode()) {
+                startPassiveScanIfNeeded();
+            }
             if (mScanHelper != null) {
                 mScanHelper.terminateThreads();
             }
