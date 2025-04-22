@@ -240,6 +240,11 @@ public class BeaconService extends Service {
             mScanHelper.getCycledScanner().setLongScanForcingEnabled(longScanForcingEnabled);
         }
 
+        long androidNMaxScanDurationMillis = beaconManager.getActiveSettings().getAndroidNMaxScanDurationMillis();
+        if (mScanHelper.getCycledScanner() != null) {
+            mScanHelper.getCycledScanner().setAndroidNMaxScanDurationMillis(androidNMaxScanDurationMillis);
+        }
+
         mScanHelper.reloadParsers();
 
         // Look for simulated scan data

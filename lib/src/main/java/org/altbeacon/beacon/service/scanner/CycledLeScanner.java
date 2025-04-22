@@ -91,6 +91,8 @@ public abstract class CycledLeScanner {
     protected boolean mBackgroundFlag = false;
     protected boolean mRestartNeeded = false;
 
+    private long mAndroidNMaxScanDurationMillis = ANDROID_N_MAX_SCAN_DURATION_MILLIS;
+
     private static final long ANDROID_N_MIN_SCAN_CYCLE_MILLIS = 6000l;
 
     protected CycledLeScanner(Context context, long scanPeriod, long betweenScanPeriod, boolean backgroundFlag, CycledLeScanCallback cycledLeScanCallback, BluetoothCrashResolver crashResolver) {
@@ -553,7 +555,7 @@ public abstract class CycledLeScanner {
                 mScanPeriod;
         boolean timeoutAtRisk = android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
                 mCurrentScanStartTime > 0 &&
-                (timeOfNextScanCycleEnd - mCurrentScanStartTime > ANDROID_N_MAX_SCAN_DURATION_MILLIS);
+                (timeOfNextScanCycleEnd - mCurrentScanStartTime > mAndroidNMaxScanDurationMillis);
 
         if (timeoutAtRisk) {
             LogManager.d(TAG, "The next scan cycle would go over the Android N max duration.");
@@ -567,5 +569,13 @@ public abstract class CycledLeScanner {
             }
         }
         return false;
+    }
+
+    /**
+     * Max scan duration of Android N.
+     * @param androidNMaxScanDurationMillis
+     */
+    public void setAndroidNMaxScanDurationMillis(long androidNMaxScanDurationMillis) {
+        this.mAndroidNMaxScanDurationMillis = androidNMaxScanDurationMillis;
     }
 }
