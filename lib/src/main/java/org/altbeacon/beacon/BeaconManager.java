@@ -2105,8 +2105,8 @@ public class BeaconManager {
     BackgroundPowerSaverInternal mInternalBackgroundPowerSaver = null;
     private void ensureBackgroundPowerSaver() {
         if (mInternalBackgroundPowerSaver == null) {
-            mInternalBackgroundPowerSaver = new BackgroundPowerSaverInternal(mContext);
-            mInternalBackgroundPowerSaver.enableDefaultBackgroundStateInference();
+//            mInternalBackgroundPowerSaver = new BackgroundPowerSaverInternal(mContext);
+//            mInternalBackgroundPowerSaver.enableDefaultBackgroundStateInference();
         }
     }
 
